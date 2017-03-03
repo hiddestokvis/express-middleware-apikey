@@ -2,11 +2,10 @@
 
 module.exports = function(api_keys) {
   return function(req, res, next) {
-      if (api_keys && api_keys.length != 0 && api_keys.indexOf(req.query.api_key) == -1) {
-          console.log("Invalid api_key: "+req.query.api_key);
+      if (api_keys && api_keys.length != 0 && api_keys.indexOf(req.headers['x-api-key']) == -1) {
           res.status(401).send({ error: 'Invalid api_key' });
       } else {
-        delete req.query.api_key;
+        delete req.headers['x-api-key'];
         return next();
       }
   };
